@@ -1057,6 +1057,7 @@ void SharedMatting::save(char * filename)
 //    LOGE("align = %d" , matte->align);
     cvSaveImage(filename, matte);
 
+    // 存储抠出来的图
     IplImage *des = cvCreateImage(cvGetSize(pImg), pImg->depth, 4);
     for (int x = 0; x < pImg->width; x++)
     {
@@ -1071,13 +1072,8 @@ void SharedMatting::save(char * filename)
             cvSet2D(des, y, x, S2);
         }
     }
-    //cvSetZero(des);
-//    cvCopy(pImg, des, matte);
     const char* destName = "/storage/emulated/0/dest.png";
     cvSaveImage(destName, des);
-//    IplImage *Src_Image=0;
-//    Src_Image=cvLoadImage(ImagePath,CV_LOAD_IMAGE_ANYDEPTH|CV_LOAD_IMAGE_ANYCOLOR);
-//    IplImage *SrcImage=cvCreateImage(cvGetSize(Src_Image),Src_Image->depth,4);
 
 }
 
@@ -1089,7 +1085,7 @@ void SharedMatting::getMatte() {
     for (int i = 0; i < h; ++i) {
         for (int j = 0; j < w; ++j) {
             d[i * s + j] = alpha[i][j];
-            LOGE("alpha = %d", alpha[i][j]);
+//            LOGE("alpha = %d", alpha[i][j]);
         }
     }
 }

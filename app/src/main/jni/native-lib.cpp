@@ -27,18 +27,20 @@ char* jstringTostring(JNIEnv* env, jstring jstr)
     env->ReleaseByteArrayElements(barr, ba, 0);
     return rtn;
 }
-
 // extern 作用有两个
 // 1. 于"C"连用修饰变量或者函数时,告诉编译器按照C的规则编译函数名
 // 2. 不与"C"在一起时,它的作用就是声明函数或全局变量的作用范围的关键字,它是声明不是定义
+JNIEXPORT jobject JNICALL
+Java_com_jb_sharedmatting_MainActivity_handleBitmap(JNIEnv *env, jobject instance, jobject bitmap) {
+
+    // TODO
+
+}
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_jb_sharedmatting_MainActivity_handleImage(JNIEnv *env, jobject instance, jstring fileName_,
                                                    jstring trimapName_, jstring matteName_) {
-//    const char *fileName = env->GetStringUTFChars(fileName_, 0);
-//    const char *trimapName = env->GetStringUTFChars(trimapName_, 0);
-//    const char *matteName = env->GetStringUTFChars(matteName_, 0);
-
     // TODO
     LOGE("before declare SharedMatting");
     SharedMatting sm;
@@ -59,9 +61,6 @@ Java_com_jb_sharedmatting_MainActivity_handleImage(JNIEnv *env, jobject instance
     LOGE("start save!!!!!!!!!!!!!!!!!!!!!!!!!");
     sm.save(jstringTostring(env, matteName_));
 
-//    env->ReleaseStringUTFChars(fileName_, fileName);
-//    env->ReleaseStringUTFChars(trimapName_, trimapName);
-//    env->ReleaseStringUTFChars(matteName_, matteName);
 }
 
 extern "C"
