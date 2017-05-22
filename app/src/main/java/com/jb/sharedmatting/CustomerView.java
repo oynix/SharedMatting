@@ -109,12 +109,14 @@ public class CustomerView extends SurfaceView implements SurfaceHolder.Callback,
         int y = (int) event.getY();    //获取手指移动的y坐标
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                startDraw = true;
                 mPath.moveTo(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 mPath.lineTo(x, y);
                 break;
             case MotionEvent.ACTION_UP:
+                startDraw = false;
                 break;
         }
         return true;
