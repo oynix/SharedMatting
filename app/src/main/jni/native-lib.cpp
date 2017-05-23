@@ -30,13 +30,6 @@ char* jstringTostring(JNIEnv* env, jstring jstr)
 // extern 作用有两个
 // 1. 于"C"连用修饰变量或者函数时,告诉编译器按照C的规则编译函数名
 // 2. 不与"C"在一起时,它的作用就是声明函数或全局变量的作用范围的关键字,它是声明不是定义
-JNIEXPORT jobject JNICALL
-Java_com_jb_sharedmatting_MainActivity_handleBitmap(JNIEnv *env, jobject instance, jobject bitmap) {
-
-    // TODO
-
-}
-
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_jb_sharedmatting_MainActivity_handleImage(JNIEnv *env, jobject instance, jstring fileName_,
@@ -75,7 +68,6 @@ Java_com_jb_sharedmatting_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "Hello from C++";
-//    SharedMatting sm;
 
     return env->NewStringUTF(hello.c_str());
 }

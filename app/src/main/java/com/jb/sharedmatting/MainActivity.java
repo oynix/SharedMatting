@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView srcImg;
     private List<PathBean> mList = new ArrayList<>();
     private int currentType = PathBean.TYPE_FORE;
+    private float mRatio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +63,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         img = (ImageView) findViewById(imageView);
         srcImg = (ImageView) findViewById(R.id.src_img);
+
         Bitmap bitmap = BitmapFactory.decodeFile(SOURCE_IMAGE_URL);
         srcImg.setImageBitmap(bitmap);
-        Log.e("Main", "width = " + bitmap.getWidth() + ";;height = " + bitmap.getHeight());
+//        Log.e("Main", "width = " + bitmap.getWidth() + ";;height = " + bitmap.getHeight());
         // 创建一张空白图片
         mBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        String fileName = Environment.getExternalStorageDirectory() + File.separator + "GT04.png";
-        String trimapName = Environment.getExternalStorageDirectory() + File.separator + "GT04_trimap.png";
-        String matteName = Environment.getExternalStorageDirectory() + File.separator + "GT04_matte.png";
+        mRatio = getResources().getDisplayMetrics().density * 300 / bitmap.getWidth();
         showImage();
     }
 
@@ -81,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public native String stringFromJNI();
 
     public native void handleImage(String fileName, String trimapName, String matteName);
-
-    public native Bitmap handleBitmap(Bitmap bitmap);
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -116,8 +113,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                float x = event.getX();
-                float y = event.getY();
+                float x = event.getX() / mRatio;
+                float y = event.getY() / mRatio;
+                Log.e("Main", "Touch Event x = " + x + "..y = " + y);
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         // 获取手按下时的坐标

@@ -1074,6 +1074,7 @@ void SharedMatting::save(char * filename)
     }
     const char* destName = "/storage/emulated/0/dest.png";
     cvSaveImage(destName, des);
+    LOGE("抠图完成, 存储路径 : %s", destName);
 
 }
 
