@@ -30,8 +30,8 @@ import static com.jb.sharedmatting.R.id.imageView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 //    private static final String SOURCE_IMAGE_URL = "/storage/emulated/0/20170425.jpg";
-//    private static final String SOURCE_IMAGE_URL = "/storage/emulated/0/GT04.png";
-    private static final String SOURCE_IMAGE_URL = "/storage/emulated/0/1.jpg";
+    private static final String SOURCE_IMAGE_URL = "/storage/emulated/0/GT04.png";
+//    private static final String SOURCE_IMAGE_URL = "/storage/emulated/0/1.jpg";
     private static final String TRI_MAP_URL = "/storage/emulated/0/tri.png";
     private static final String TRI_MAP_URL_2 = "/storage/emulated/0/dest_contours.png";
     private static final String MATTE_URL = "/storage/emulated/0/matte.png";
@@ -165,55 +165,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 paint.setColor(BACKGROUND_COLOR);
                 break;
             case R.id.btn_finish:
-                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                // 画黑色
-                canvas.drawColor(0xff000000);
-                // 画不确定区域
-                Path path = new Path();
-                for (PathBean pathBean : mList) {
-                    path.addPath(pathBean.mPath);
-                }
-                paint.setColor(MEDIUM_COLOR);
-                canvas.drawPath(path, paint);
-
-                Path edge = new Path();
-                edge.moveTo(0, 0);
-                edge.lineTo(0, canvas.getHeight());
-                edge.lineTo(canvas.getWidth(), canvas.getHeight());
-                edge.lineTo(canvas.getWidth(), 0);
-                edge.lineTo(10, 0);
-//                edge.close();
-//                edge.op(path, Path.Op.XOR);
-//                Log.e("path", "isRectf : " + edge.isRect(new RectF()));
-//                Log.e("path", "isEmpty : " + edge.isEmpty());
-                paint.setStrokeWidth(5);
-                canvas.drawPath(edge, paint);
-                paint.setStrokeWidth(10 * getResources().getDisplayMetrics().density);
-
-//                RectF bounds = new RectF();
-//                path.computeBounds(bounds, false);
-//                path.set();
-//                paint.setStrokeWidth(1);
-//                canvas.drawRect(bounds, paint);
-//                Log.e("Main", "src width = " + img.getWidth() / mRatio + "..src height = " + img.getHeight() / mRatio);
-//                Log.e("Main", "left = " + bounds.left + "..top = " + bounds.top + "..right = " + bounds.right + "..bottom = " + bounds.bottom);
-                // Bitmap序列化
-                File file = new File(TRI_MAP_URL);
-                OutputStream stream;
-                try {
-                    stream = new FileOutputStream(file);
-                    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-//                handleImage(SOURCE_IMAGE_URL, TRI_MAP_URL, MATTE_URL);
-                cvFindContours(TRI_MAP_URL);
-                handleImage(SOURCE_IMAGE_URL, TRI_MAP_URL_2, MATTE_URL);
-
-                Toast.makeText(getApplicationContext(), "accomplishment", Toast.LENGTH_SHORT).show();
+//                secondMethod();
+                threeLayerTriMapOperation();
                 break;
         }
+    }
+
+    private void secondMethod() {
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        // 画黑色
+        canvas.drawColor(0xff000000);
+        // 画不确定区域
+        Path path = new Path();
+        for (PathBean pathBean : mList) {
+            path.addPath(pathBean.mPath);
+        }
+        paint.setColor(MEDIUM_COLOR);
+        canvas.drawPath(path, paint);
+
+        Path edge = new Path();
+        edge.moveTo(0, 0);
+        edge.lineTo(0, canvas.getHeight());
+        edge.lineTo(canvas.getWidth(), canvas.getHeight());
+        edge.lineTo(canvas.getWidth(), 0);
+        edge.lineTo(10, 0);
+        paint.setStrokeWidth(5);
+        canvas.drawPath(edge, paint);
+        paint.setStrokeWidth(10 * getResources().getDisplayMetrics().density);
+
+        // Bitmap序列化
+        File file = new File(TRI_MAP_URL);
+        OutputStream stream;
+        try {
+            stream = new FileOutputStream(file);
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        cvFindContours(TRI_MAP_URL);
+        handleImage(SOURCE_IMAGE_URL, TRI_MAP_URL_2, MATTE_URL);
+
+        Toast.makeText(getApplicationContext(), "accomplishment", Toast.LENGTH_SHORT).show();
     }
 
     private void threeLayerTriMapOperation() {
